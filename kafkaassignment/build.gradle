@@ -1,0 +1,47 @@
+plugins {
+	id 'org.springframework.boot' version '3.0.0'
+	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+	id 'java'
+}
+
+group = 'com.example'
+version = '1.0.0'
+sourceCompatibility = '17'
+
+repositories {
+	mavenCentral()
+	maven {
+		url 'https://packages.confluent.io/maven/'
+	}
+}
+
+dependencies {
+	// Spring Boot Starter for Web and Security
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+
+	// OAuth2 Resource Server and JWT dependencies
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
+	implementation 'org.springframework.security:spring-security-oauth2-jose'
+
+	// Kafka and Avro dependencies
+	implementation 'org.springframework.kafka:spring-kafka'
+	implementation 'io.confluent:kafka-avro-serializer:7.3.3'
+	implementation 'org.apache.avro:avro:1.11.0'
+
+	// MySQL and JPA for database integration
+	implementation 'mysql:mysql-connector-java'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+	// Observability (Prometheus, Grafana)
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	implementation 'io.micrometer:micrometer-registry-prometheus'
+
+	// Testing dependencies
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.mockito:mockito-core'
+}
+
+test {
+	useJUnitPlatform()
+}

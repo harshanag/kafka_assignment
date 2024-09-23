@@ -1,0 +1,20 @@
+server:
+  port: 8080
+
+spring:
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+    properties:
+      schema.registry.url: http://localhost:8081
+      producer.compression-type: gzip
+
+spring.security.oauth2.resourceserver.jwt.issuer-uri: https://your-auth-server-url
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, prometheus

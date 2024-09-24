@@ -24,14 +24,20 @@ function Form() {
         e.preventDefault();
 
         try {
+            // Ensure the date format matches the backend (ISO 8601 format like 'YYYY-MM-DD')
+            const personPayload = {
+                ...person,
+                dateOfBirth: new Date(person.dateOfBirth).toISOString().split('T')[0]  // Format date to 'YYYY-MM-DD'
+            };
+
             // Send person data to the backend (Spring Boot API)
-            const response = await axios.post(`${process.env.REACT_APP_API_URL}/person`, person, {
+            const response = await axios.post(`${process.env.REACT_APP_API_URL}/api/v1/send`, personPayload, {
                 headers: {
                     'Content-Type': 'application/json'
                 }
             });
 
-            setMessage('Person data submitted successfully!');
+            setMessage('Person data submitted successfully! Response: ' + response.data);
         } catch (error) {
             setMessage('Error submitting data: ' + error.message);
         }

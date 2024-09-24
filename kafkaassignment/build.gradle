@@ -29,10 +29,6 @@ dependencies {
 	implementation 'io.confluent:kafka-avro-serializer:7.3.3'
 	implementation 'org.apache.avro:avro:1.11.0'
 
-	// MySQL and JPA for database integration
-	implementation 'mysql:mysql-connector-java'
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-
 	// Observability (Prometheus, Grafana)
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	implementation 'io.micrometer:micrometer-registry-prometheus'

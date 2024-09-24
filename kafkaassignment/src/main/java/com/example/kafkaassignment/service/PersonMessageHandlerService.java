@@ -1,5 +1,7 @@
 package com.example.kafkaassignment.service;
 
+import com.example.kafkaassignment.enums.KafkaTopics;
+import com.example.kafkaassignment.model.Person;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
@@ -28,10 +30,10 @@ public class PersonMessageHandlerService {
         System.out.println("Consumed message: " + message + ", Calculated Age: " + age);
 
         if (age % 2 == 0) {
-            kafkaTemplate.send("CustomerEVEN", message);
+            kafkaTemplate.send(KafkaTopics.CUSTOMER_EVEN.getTopicName(), message);
             System.out.println("Published to CustomerEVEN topic: " + message);
         } else {
-            kafkaTemplate.send("CustomerODD", message);
+            kafkaTemplate.send(KafkaTopics.CUSTOMER_ODD.getTopicName(), message);
             System.out.println("Published to CustomerODD topic: " + message);
         }
     }
@@ -40,6 +42,10 @@ public class PersonMessageHandlerService {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate birthDate = LocalDate.parse(dob, formatter);
         return Period.between(birthDate, LocalDate.now()).getYears();
+    }
+
+    private void publishMessageBasedOnPersonAge(Person person) {
+
     }
 }
 

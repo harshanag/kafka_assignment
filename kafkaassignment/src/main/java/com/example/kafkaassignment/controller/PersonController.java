@@ -1,6 +1,8 @@
 package com.example.kafkaassignment.controller;
 
 
+import com.example.kafkaassignment.enums.KafkaTopics;
+import com.example.kafkaassignment.model.Person;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,9 +17,9 @@ public class PersonController {
     }
 
     @PostMapping("/send")
-    public String sendMessage(@RequestParam String firstName, @RequestParam String lastName, @RequestParam String dob) {
-        String message = String.format("%s,%s,%s", firstName, lastName, dob);
-        kafkaTemplate.send("CustomerInputTopic", message);
+    public String sendMessage(@RequestBody Person person) {
+        String message = String.format("%s,%s,%s", person.firstName(), person.lastName(), person.dateOfBirth());
+        kafkaTemplate.send(KafkaTopics.CUSTOMER_INPUT.getTopicName(), message);
         return "Message sent to Kafka: " + message;
     }
 }

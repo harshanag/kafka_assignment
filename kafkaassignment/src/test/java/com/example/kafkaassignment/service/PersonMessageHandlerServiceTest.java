@@ -1,23 +1,21 @@
 package com.example.kafkaassignment.service;
 
+import com.example.kafkaassignment.template.KafkaMessageProducer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.springframework.kafka.core.KafkaTemplate;
 
-import static org.mockito.Mockito.*;
 
-class PersonMessageHandlerServiceTest {
+public class PersonMessageHandlerServiceTest {
 
     private PersonMessageHandlerService personMessageHandlerService;
-    private KafkaTemplate<String, String> kafkaTemplate;
+    private KafkaMessageProducer kafkaMessageProducerMock;
 
     @BeforeEach
-    void setUp() {
-        kafkaTemplate = Mockito.mock(KafkaTemplate.class);
-        personMessageHandlerService = new PersonMessageHandlerService(kafkaTemplate);
+    public void setUp() {
+        kafkaMessageProducerMock = Mockito.mock(KafkaMessageProducer.class);
+        personMessageHandlerService = new PersonMessageHandlerService(kafkaMessageProducerMock);
     }
-
 
     @Test
     void testCalculateAge() {
@@ -30,5 +28,4 @@ class PersonMessageHandlerServiceTest {
         // Then: the correct age should be returned
         assert(age == 32); // Assuming the current year is 2022
     }
-
 }

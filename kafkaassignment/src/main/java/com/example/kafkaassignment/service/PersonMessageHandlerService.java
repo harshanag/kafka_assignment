@@ -2,10 +2,10 @@ package com.example.kafkaassignment.service;
 
 import com.example.kafkaassignment.controller.PersonController;
 import com.example.kafkaassignment.enums.KafkaTopics;
+import com.example.kafkaassignment.template.KafkaMessageProducer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -15,11 +15,11 @@ import java.time.format.DateTimeFormatter;
 @Service
 public class PersonMessageHandlerService {
 
-    private final KafkaTemplate<String, String> kafkaTemplate;
     private static final Logger logger = LogManager.getLogger(PersonController.class);
+    private final KafkaMessageProducer kafkaMessageProducer;
 
-    public PersonMessageHandlerService(KafkaTemplate<String, String> kafkaTemplate) {
-        this.kafkaTemplate = kafkaTemplate;
+    public PersonMessageHandlerService(KafkaMessageProducer kafkaMessageProducer) {
+        this.kafkaMessageProducer = kafkaMessageProducer;
     }
 
     @KafkaListener(topics = "CustomerInputTopic", groupId = "group_id")
@@ -42,10 +42,10 @@ public class PersonMessageHandlerService {
 
     public void publishMessageBasedOnPersonAge(int age, String consumedMessage) {
         if (age % 2 == 0) {
-            kafkaTemplate.send(KafkaTopics.CUSTOMER_EVEN.getTopicName(), consumedMessage);
+            kafkaMessageProducer.sendMessage(KafkaTopics.CUSTOMER_EVEN.getTopicName(), consumedMessage);
             logger.info("Published to CustomerEVEN topic: " + consumedMessage);
         } else {
-            kafkaTemplate.send(KafkaTopics.CUSTOMER_ODD.getTopicName(), consumedMessage);
+            kafkaMessageProducer.sendMessage(KafkaTopics.CUSTOMER_ODD.getTopicName(), consumedMessage);
             logger.info("Published to CustomerODD topic: " + consumedMessage);
         }
     }

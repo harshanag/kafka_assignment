@@ -34,13 +34,13 @@ public class PersonMessageHandlerService {
         publishMessageBasedOnPersonAge(age, message);
     }
 
-    private int calculateAge(String dob) {
+    public int calculateAge(String dob) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate birthDate = LocalDate.parse(dob, formatter);
         return Period.between(birthDate, LocalDate.now()).getYears();
     }
 
-    private void publishMessageBasedOnPersonAge(int age, String consumedMessage) {
+    public void publishMessageBasedOnPersonAge(int age, String consumedMessage) {
         if (age % 2 == 0) {
             kafkaTemplate.send(KafkaTopics.CUSTOMER_EVEN.getTopicName(), consumedMessage);
             logger.info("Published to CustomerEVEN topic: " + consumedMessage);
